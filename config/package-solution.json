@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spo-i-18-n-client-side-solution",
+    "id": "da45282b-4e17-4aa1-af15-3ff713fdfe50",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.17.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "spo-i18n description"
+      },
+      "longDescription": {
+        "default": "spo-i18n description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spo-i-18-n Feature",
+        "description": "The feature that activates elements of the spo-i-18-n solution.",
+        "id": "2720e415-f6d7-4aff-b034-d832288a56ab",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spo-i-18-n.sppkg"
+  }
+}
