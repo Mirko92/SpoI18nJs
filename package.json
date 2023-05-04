@@ -25,7 +25,8 @@
     "@microsoft/sp-webpart-base": "1.17.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "tslib": "2.3.1"
+    "tslib": "2.3.1",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@microsoft/eslint-config-spfx": "1.17.1",

@@ -9,8 +9,9 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SpoI18NWebPartStrings';
-import SpoI18N from './components/SpoI18N';
-import { ISpoI18NProps } from './components/ISpoI18NProps';
+import SpoI18N from './components/SpoI18n/SpoI18N';
+import { ISpoI18NProps } from './components/SpoI18n/ISpoI18NProps';
+
 
 export interface ISpoI18NWebPartProps {
   description: string;
@@ -19,7 +20,6 @@ export interface ISpoI18NWebPartProps {
 export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPartProps> {
 
   private _isDarkTheme: boolean = false;
-  private _environmentMessage: string = '';
 
   public render(): void {
     const element: React.ReactElement<ISpoI18NProps> = React.createElement(
@@ -27,9 +27,6 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
       {
         description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
-        environmentMessage: this._environmentMessage,
-        hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName
       }
     );
 
@@ -37,9 +34,8 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
   }
 
   protected onInit(): Promise<void> {
-    return this._getEnvironmentMessage().then(message => {
-      this._environmentMessage = message;
-    });
+    this._getEnvironmentMessage();
+    return Promise.resolve();
   }
 
 
@@ -63,6 +59,7 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
               throw new Error('Unknown host');
           }
 
+          console.debug("Env: ", environmentMessage);
           return environmentMessage;
         });
     }
@@ -81,9 +78,9 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
     } = currentTheme;
 
     if (semanticColors) {
-      this.domElement.style.setProperty('--bodyText', semanticColors.bodyText || null);
-      this.domElement.style.setProperty('--link', semanticColors.link || null);
-      this.domElement.style.setProperty('--linkHovered', semanticColors.linkHovered || null);
+      this.domElement.style.setProperty('--bodyText',     semanticColors.bodyText     || null);
+      this.domElement.style.setProperty('--link',         semanticColors.link         || null);
+      this.domElement.style.setProperty('--linkHovered',  semanticColors.linkHovered  || null);
     }
 
   }
