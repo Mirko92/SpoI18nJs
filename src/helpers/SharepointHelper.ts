@@ -20,7 +20,7 @@ export class SharepointHelper {
     if (groupName || pattern) {
 
       const groupFilter =  Array.isArray(groupName) &&  groupName?.length > 0 
-          ? groupName.map(g => `Group eq ${g}`).join(' or ')
+          ? groupName.map(g => `Group eq '${g}'`).join(' or ')
           : null 
 
       const textFilter = [

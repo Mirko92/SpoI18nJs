@@ -55,7 +55,9 @@ export const steps = [
     conditionValue: Elements.COLUMNS,
     content: (
       <>
-        <Text variant="medium">Step 2: Columns selection</Text>
+        <Text variant="medium">
+          Filter and select the available Columns based on your requirements.
+        </Text>
         
         <ColumnsSelector />
       </>

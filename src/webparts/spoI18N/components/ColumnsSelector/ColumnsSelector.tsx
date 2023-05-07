@@ -41,10 +41,6 @@ export function ColumnsSelector() {
   }
 
   return <>
-    <h2>Columns selector: </h2>
-
-    <p>Filter available Columns based on your requirements.</p>
-
     <Stack tokens={{childrenGap: 20}}>
 
       <div>
