@@ -57,9 +57,9 @@ export const Wizard = () => {
       <Stack horizontalAlign="center">
         <Stack.Item align="center">
           <Text variant="xxLarge">{wizardSteps[currentStep].title}</Text>
-          <br />
-          {wizardSteps[currentStep].content}
         </Stack.Item>
+
+        {wizardSteps[currentStep].content}
       </Stack>
       <Separator />
 

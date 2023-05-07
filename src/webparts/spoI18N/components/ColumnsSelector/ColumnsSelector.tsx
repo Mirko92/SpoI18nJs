@@ -1,9 +1,9 @@
 import * as React from "react";
 // import { useAppStore } from "../../store/store";
-import { SharepointHelper } from "../../../../helpers/SharepointHelper";
 import { IFieldInfo } from "@pnp/sp/fields";
 import { DetailsList, DetailsListLayoutMode, IColumn, PrimaryButton, Stack, TextField } from "@fluentui/react";
 import { Chip } from "../Chip/Chip";
+import { getFieldsByGroupsAndInternalName } from "../../../../helpers/SharepointHelpers";
 
 
 const columns: IColumn[] = [
@@ -29,9 +29,13 @@ export function ColumnsSelector() {
     setGroupName("");
   }
 
+  function onRemoveGroup(groupName: string) {
+    setGroups(gs => gs.filter(g => g !== groupName));
+  }
+
   
   async function doSearch() {
-    const result = await SharepointHelper.getFieldsByGroupsAndInternalName(
+    const result = await getFieldsByGroupsAndInternalName(
       groups, namePart
     );
 
@@ -40,8 +44,8 @@ export function ColumnsSelector() {
     setAllFields(result)
   }
 
-  return <>
-    <Stack tokens={{childrenGap: 20}}>
+  return <Stack.Item align="stretch">
+    <Stack tokens={{childrenGap: 20}} horizontalAlign="stretch">
 
       <div>
         <form onSubmit={onAddGroup} >
@@ -49,12 +53,13 @@ export function ColumnsSelector() {
             label="Group Name"
             value={groupName}
             onChange={(_, v) => setGroupName(v)} 
+            description="Press enter to add!"
           />
         </form>
 
-        <div style={{display: "flex", gap: "1rem"}}>
-          { groups?.map( g => <Chip text={g} />)}
-        </div>
+        <Stack tokens={{childrenGap: 10}} horizontal>
+          { groups?.map( g => <Chip text={g} onRemove={onRemoveGroup} />)}
+        </Stack>
       </div>
 
       <TextField 
@@ -71,7 +76,7 @@ export function ColumnsSelector() {
 
     {
       !!allFields?.length && <>
-        <h3>Field strovati: {allFields.length}</h3>
+        <h3>Columns found: {allFields.length}</h3>
   
         <DetailsList
           items={allFields}
@@ -80,5 +85,5 @@ export function ColumnsSelector() {
         />
       </>
     }
-  </>;
+  </Stack.Item>;
 }

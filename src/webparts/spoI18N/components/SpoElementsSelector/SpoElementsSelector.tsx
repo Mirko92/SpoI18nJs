@@ -33,48 +33,50 @@ export function SpoElementsSelector() {
   }
 
   return (
-    <form>
-      <h2>Seleziona gli elementi che intendi tradurre: </h2>
+    <Stack.Item align="center">
+      <form>
+        <h2>Seleziona gli elementi che intendi tradurre: </h2>
 
-      <Stack tokens={stackTokens}>
-        <Checkbox 
-          label="Columns"       
-          name="selectedElements"
-          checked={isChecked(Elements.COLUMNS)}
-          onChange={handleCheckboxChange} 
-          inputProps={{
-            value: Elements.COLUMNS,
-          }}
-        />
-        <Checkbox 
-          label="Content types" 
-          name="selectedElements"
-          checked={isChecked(Elements.CONTENT_TYPES)}
-          onChange={handleCheckboxChange} 
-          inputProps={{
-            value: Elements.CONTENT_TYPES
-          }}
-        />
-        <Checkbox 
-          label="Lists"         
-          name="selectedElements"
-          checked={isChecked(Elements.LISTS)}
-          onChange={handleCheckboxChange} 
-          inputProps={{
-            value: Elements.LISTS
-          }}
-        />
-        <Checkbox 
-          label="Views"         
-          name="selectedElements"
-          checked={isChecked(Elements.VIEWS)}
-          onChange={handleCheckboxChange} 
-          inputProps={{
-            value: Elements.VIEWS
-          }}
-        />
-      </Stack>
+        <Stack tokens={stackTokens}>
+          <Checkbox 
+            label="Columns"       
+            name="selectedElements"
+            checked={isChecked(Elements.COLUMNS)}
+            onChange={handleCheckboxChange} 
+            inputProps={{
+              value: Elements.COLUMNS,
+            }}
+          />
+          <Checkbox 
+            label="Content types" 
+            name="selectedElements"
+            checked={isChecked(Elements.CONTENT_TYPES)}
+            onChange={handleCheckboxChange} 
+            inputProps={{
+              value: Elements.CONTENT_TYPES
+            }}
+          />
+          <Checkbox 
+            label="Lists"         
+            name="selectedElements"
+            checked={isChecked(Elements.LISTS)}
+            onChange={handleCheckboxChange} 
+            inputProps={{
+              value: Elements.LISTS
+            }}
+          />
+          <Checkbox 
+            label="Views"         
+            name="selectedElements"
+            checked={isChecked(Elements.VIEWS)}
+            onChange={handleCheckboxChange} 
+            inputProps={{
+              value: Elements.VIEWS
+            }}
+          />
+        </Stack>
 
-    </form>
+      </form>
+    </Stack.Item>
   );
 }
