@@ -11,6 +11,7 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'SpoI18NWebPartStrings';
 import SpoI18N from './components/SpoI18n/SpoI18N';
 import { ISpoI18NProps } from './components/SpoI18n/ISpoI18NProps';
+import { getSP } from '../../pnpjsconfig';
 
 
 export interface ISpoI18NWebPartProps {
@@ -30,6 +31,8 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
       }
     );
 
+    getSP(this.context);
+    // getGraph(this.context);
     ReactDom.render(element, this.domElement);
   }
 

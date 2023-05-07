@@ -22,6 +22,12 @@ dependencies:
   '@microsoft/sp-webpart-base':
     specifier: 1.17.1
     version: 1.17.1(@microsoft/microsoft-graph-client@1.7.2-spfx)(@types/react-dom@17.0.17)(@types/react@17.0.45)
+  '@pnp/graph':
+    specifier: ^3.14.0
+    version: 3.14.0
+  '@pnp/sp':
+    specifier: ^3.14.0
+    version: 3.14.0
   react:
     specifier: 17.0.1
     version: 17.0.1
@@ -1282,6 +1288,10 @@ packages:
       - encoding
     dev: false
 
+  /@microsoft/microsoft-graph-types@2.26.0:
+    resolution: {integrity: sha512-ABYHb80BRF5Sjo1CdbRdZpI4O0Jal85XVAGmTfnpSMOjUZi0HkESHP+oajVsPSQJyRTjEKrbneUC2qheBBdQGg==}
+    dev: false
+
   /@microsoft/rush-lib@5.93.1:
     resolution: {integrity: sha512-8ZCSW4He9VPAAsF2T/OxVaTN06wLbzeEveOvEuwNJ5h6AQYPTtlH0yv8cDDuZqSEVgOv/gK4D+kAExOszYm06A==}
     engines: {node: '>=5.6.0'}
@@ -1881,6 +1891,42 @@ packages:
     resolution: {integrity: sha512-O2yRJce1GOc6PAy3QxFM4NzFiWzvScDC1/5ihYBL6BUEVdq0XMWN01sppE+H6bBXbaFYipjwFLEWLg5PaSOThA==}
     engines: {node: '>=8.0.0'}
     dev: true
+
+  /@pnp/core@3.14.0:
+    resolution: {integrity: sha512-Y2ne4xHHc9YpF6TtgYw88SAqyRNYtTSKYfwUKJkNMtEkC8jVaEPGBlD5LjEtbEXWdO5Qc14MWi82RiYtWkizYQ==}
+    engines: {node: '>=14.15.1'}
+    dependencies:
+      tslib: 2.4.1
+    dev: false
+
+  /@pnp/graph@3.14.0:
+    resolution: {integrity: sha512-mkinodSnf+AnpGyA+pwMQ9GnbAF4bCA+SY6OoKFHO0JLaTaLB5GS7+oj8o01N0WjHIIRmdFla9cpDBp+TZ2eCw==}
+    engines: {node: '>=14.15.1'}
+    requiresBuild: true
+    dependencies:
+      '@microsoft/microsoft-graph-types': 2.26.0
+      '@pnp/core': 3.14.0
+      '@pnp/queryable': 3.14.0
+      tslib: 2.4.1
+    dev: false
+
+  /@pnp/queryable@3.14.0:
+    resolution: {integrity: sha512-lmxp99tGfXDqqqyWnCxUUGXMYz+OGyF3+/OvkHgCYtSo7o38l7Y/1MLGz3S2AYPLaHQraFhBAfKCTitEfzh8CQ==}
+    engines: {node: '>=14.15.1'}
+    dependencies:
+      '@pnp/core': 3.14.0
+      tslib: 2.4.1
+    dev: false
+
+  /@pnp/sp@3.14.0:
+    resolution: {integrity: sha512-vk++j/OT7rdZ1hz7f/eeuS6Ra3MXleyk6VzG83PcPqvCJ9X7M3TCaN8NFaiXE12BRGbFGOAVtlMGOsCSJ2hJdg==}
+    engines: {node: '>=14.15.1'}
+    requiresBuild: true
+    dependencies:
+      '@pnp/core': 3.14.0
+      '@pnp/queryable': 3.14.0
+      tslib: 2.4.1
+    dev: false
 
   /@pnpm/crypto.base32-hash@1.0.1:
     resolution: {integrity: sha512-pzAXNn6KxTA3kbcI3iEnYs4vtH51XEVqmK/1EiD18MaPKylhqy8UvMJK3zKG+jeP82cqQbozcTGm4yOQ8i3vNw==}
@@ -13343,6 +13389,10 @@ packages:
 
   /tslib@2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+
+  /tslib@2.4.1:
+    resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+    dev: false
 
   /tslib@2.5.0:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==}

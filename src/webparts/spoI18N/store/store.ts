@@ -15,7 +15,10 @@ export const useAppStore = create<IAppStore>((set) => ({
   },
 
   selectedElements: [
-    Elements.LISTS
+    Elements.COLUMNS,
+    Elements.CONTENT_TYPES,
+    Elements.LISTS,
+    Elements.VIEWS
   ],
   setSelectedElements: (selectedElements: Elements[]) => {
     set(() => ({ selectedElements }));

@@ -36,11 +36,6 @@ export function SpoElementsSelector() {
     <form>
       <h2>Seleziona gli elementi che intendi tradurre: </h2>
 
-      <div>
-        <pre>{JSON.stringify(selectedElements)}</pre>
-      </div>
-
-
       <Stack tokens={stackTokens}>
         <Checkbox 
           label="Columns"       
