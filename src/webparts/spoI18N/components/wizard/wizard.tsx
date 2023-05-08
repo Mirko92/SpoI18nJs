@@ -54,7 +54,8 @@ export const Wizard = () => {
 
   return (
     <>
-      <Stack horizontalAlign="center">
+    
+      <Stack horizontalAlign="center" style={{minHeight: "360px"}}>
         <Stack.Item align="center">
           <Text variant="xxLarge">{wizardSteps[currentStep].title}</Text>
         </Stack.Item>

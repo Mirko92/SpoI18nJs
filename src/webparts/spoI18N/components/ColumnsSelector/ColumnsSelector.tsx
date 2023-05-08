@@ -1,12 +1,12 @@
 import * as React from "react";
 // import { useAppStore } from "../../store/store";
-import { IFieldInfo } from "@pnp/sp/fields";
 import { DetailsList, DetailsListLayoutMode, IColumn, PrimaryButton, Stack, TextField } from "@fluentui/react";
 import { Chip } from "../Chip/Chip";
 import { getFieldsByGroupsAndInternalName } from "../../../../helpers/SharepointHelpers";
+import { useAppStore } from "../../store/store";
 
 
-const columns: IColumn[] = [
+const tableColumns: IColumn[] = [
   { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 200 },
   { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 200 },
   { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200 },
@@ -17,7 +17,9 @@ export function ColumnsSelector() {
   const [ groupName, setGroupName ] = React.useState<string>();
   const [ groups, setGroups       ] = React.useState<string[]>([]);
   
-  const [ allFields, setAllFields ] = React.useState<IFieldInfo[]>();
+  const {columns, setColumns} = useAppStore( 
+    ({ columns, setColumns }) => ({ columns, setColumns })
+  );
 
   function onAddGroup(e: React.FormEvent) {
     e.preventDefault();
@@ -41,7 +43,7 @@ export function ColumnsSelector() {
 
     console.debug("result", result);
 
-    setAllFields(result)
+    setColumns(result)
   }
 
   return <Stack.Item align="stretch">
@@ -53,7 +55,7 @@ export function ColumnsSelector() {
             label="Group Name"
             value={groupName}
             onChange={(_, v) => setGroupName(v)} 
-            description="Press enter to add!"
+            description="Press 'enter' to add the group as filter!"
           />
         </form>
 
@@ -66,21 +68,27 @@ export function ColumnsSelector() {
         label="Name Part" 
         value={namePart}
         onChange={(_, v) => setNamePart(v)}
+        description="This filter is case sensitive!"
       />
 
-      <PrimaryButton 
-        text="Search" 
-        onClick={doSearch}
-      />
+      <Stack.Item align="center">
+        <PrimaryButton 
+          iconProps={{
+            iconName: "Search",
+          }}
+          text="Search" 
+          onClick={doSearch}
+        />
+      </Stack.Item>
     </Stack>
 
     {
-      !!allFields?.length && <>
-        <h3>Columns found: {allFields.length}</h3>
+      !!columns?.length && <>
+        <h3>Columns found: {columns.length}</h3>
   
         <DetailsList
-          items={allFields}
-          columns={columns}
+          items={columns}
+          columns={tableColumns}
           layoutMode={DetailsListLayoutMode.justified}
         />
       </>

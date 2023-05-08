@@ -2,7 +2,7 @@ import * as React from "react";
 import { DetailsList, DetailsListLayoutMode, IColumn, PrimaryButton, Stack, TextField } from "@fluentui/react";
 import { Chip } from "../Chip/Chip";
 import { getAllContentTypeByGroups } from "../../../../helpers/SharepointHelpers";
-import { IContentTypeInfo } from "@pnp/sp/content-types";
+import { useAppStore } from "../../store/store";
 
 
 const columns: IColumn[] = [
@@ -14,7 +14,9 @@ export function ContentTypesSelector() {
   const [ groupName, setGroupName ] = React.useState<string>();
   const [ groups, setGroups       ] = React.useState<string[]>([]);
 
-  const [ allCts, setAllCts ] = React.useState<IContentTypeInfo[]>();
+  const {contentTypes, setContentTypes} = useAppStore( 
+    ({ contentTypes, setContentTypes }) => ({ contentTypes, setContentTypes })
+  );
 
   function onAddGroup(e: React.FormEvent) {
     e.preventDefault();
@@ -35,7 +37,7 @@ export function ContentTypesSelector() {
 
     console.debug("result", result);
 
-    setAllCts(result);
+    setContentTypes(result);
   }
 
   return (
@@ -47,7 +49,7 @@ export function ContentTypesSelector() {
               label="Group Name"
               value={groupName}
               onChange={(_, v) => setGroupName(v)} 
-              description="Press enter to add!"
+              description="Press 'enter' to add the group as filter!"
             />
           </form>
 
@@ -56,18 +58,23 @@ export function ContentTypesSelector() {
           </Stack>
         </div>
 
-        <PrimaryButton 
-          text="Search" 
-          onClick={doSearch}
-        />
+        <Stack.Item align="center">
+          <PrimaryButton 
+            iconProps={{
+              iconName: "Search",
+            }}
+            text="Search" 
+            onClick={doSearch}
+          />
+        </Stack.Item>
       </Stack>
 
       {
-        !!allCts?.length && <>
-          <h3>Content Types found: {allCts.length}</h3>
+        !!contentTypes?.length && <>
+          <h3>Content Types found: {contentTypes.length}</h3>
     
           <DetailsList
-            items={allCts}
+            items={contentTypes}
             columns={columns}
             layoutMode={DetailsListLayoutMode.justified}
           />

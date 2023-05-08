@@ -13,7 +13,6 @@ import SpoI18N from './components/SpoI18n/SpoI18N';
 import { ISpoI18NProps } from './components/SpoI18n/ISpoI18NProps';
 import { getSP } from '../../pnpjsconfig';
 
-
 export interface ISpoI18NWebPartProps {
   description: string;
 }

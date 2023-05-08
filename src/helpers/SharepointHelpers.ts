@@ -1,12 +1,13 @@
 import { getSP } from "../pnpjsconfig";
+
 import "@pnp/sp/webs";
 import "@pnp/sp/fields";
 import "@pnp/sp/content-types";
-import "@pnp/graph/sites";
-import { IFieldInfo } from "@pnp/sp/fields";
+import "@pnp/sp/lists";
+import "@pnp/sp/views";
 
 
-export function getFieldsByGroupsAndInternalName( groupName?: string[], pattern?: string ): Promise<IFieldInfo[]> {
+export function getFieldsByGroupsAndInternalName( groupName?: string[], pattern?: string ) {
   let _fields = getSP().web.fields
 
   if (groupName || pattern) {
@@ -25,7 +26,7 @@ export function getFieldsByGroupsAndInternalName( groupName?: string[], pattern?
     _fields = _fields.filter(textFilter)
   }
 
-  return _fields.select("Title", "InternalName", "Group")();
+  return _fields.select("Id", "Title", "InternalName", "Group")();
 }
 
 export function getAllContentTypeByGroups(groupName?: string[]) {
@@ -36,5 +37,22 @@ export function getAllContentTypeByGroups(groupName?: string[]) {
 
     _cts = _cts.filter(groupFilter)
   }
-  return _cts.select("Name", "Description")();
+  return _cts.select("Id", "Name", "Description")();
+}
+
+export function getAllLists(listNames?: string[]) {
+  let _lists = getSP().web.lists;
+
+  if ( listNames?.length ) {
+    const nameFilter =  listNames.map(g => `Title eq '${g}'`).join(' or ');
+
+    _lists = _lists.filter(nameFilter)
+  }
+
+  return _lists.select("Id", "Title", "Description")();
+}
+
+export function getViews(listId: string) {
+  let _views = getSP().web.lists.getById(listId).views;
+  return _views();
 }

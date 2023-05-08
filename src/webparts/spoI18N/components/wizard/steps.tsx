@@ -56,7 +56,7 @@ export const steps = [
     content: (
       <>
         <Text variant="medium">
-          Filter and select the available Columns based on your requirements.
+          Filter and select the available <b>Columns</b> based on your requirements.
         </Text>
         
         <ColumnsSelector />
@@ -68,7 +68,9 @@ export const steps = [
     conditionValue: Elements.CONTENT_TYPES,
     content: (
       <>
-        <Text variant="medium">Step 3: Content types selection</Text>
+        <Text variant="medium">
+          Filter and select the available <b>Content Types</b> based on your requirements.
+        </Text>
 
         <ContentTypesSelector />
       </>
@@ -79,9 +81,23 @@ export const steps = [
     conditionValue: Elements.LISTS,
     content: (
       <>
-        <Text variant="medium">Step 4: List selection</Text>
+        <Text variant="medium">
+          Filter and select the available <b>Lists</b> based on your requirements.
+        </Text>
         
         <ListsSelector />
+      </>
+    ),
+  },
+  {
+    title: 'Views selection',
+    conditionValue: Elements.VIEWS,
+    content: (
+      <>
+        <Text variant="medium">
+          Select the available <b>Views</b> based on your requirements.
+        </Text>
+        
         <ViewsSelector />
       </>
     ),
