@@ -11,9 +11,7 @@ import { ColumnsSelector }      from '../ColumnsSelector/ColumnsSelector';
 import { ContentTypesSelector } from '../ContentTypesSelector/ContentTypesSelector';
 import { ListsSelector }        from '../ListsSelector/ListsSelector';
 import { ViewsSelector }        from '../ViewsSelector/ViewsSelector';
-
-// Logo
-const imgSrc = require('../../assets/spoi18n_logo.svg');
+import { Logo } from '../../../../components/Logo';
 
 /**
  * Every available wizard step from Welcome to Finish
@@ -25,11 +23,7 @@ export const steps = [
       <>
         
         <div className={styles.welcome}>
-          <img 
-            alt="Webpart logo" 
-            src={imgSrc} 
-            className={styles.welcomeImage} 
-          />
+          <Logo />
           
           <br />
           

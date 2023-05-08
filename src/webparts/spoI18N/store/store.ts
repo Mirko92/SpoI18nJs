@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { Elements } from '../models/Elements';
-import { IListInfo } from '@pnp/sp/lists';
-import { IFieldInfo } from '@pnp/sp/fields';
+import { IListInfo }        from '@pnp/sp/lists';
+import { IFieldInfo }       from '@pnp/sp/fields';
+import { IViewInfo }        from '@pnp/sp/views';
 import { IContentTypeInfo } from '@pnp/sp/content-types';
 
 export interface IAppStore {
@@ -21,9 +22,13 @@ export interface IAppStore {
 
   selectedLists: IListInfo[];
   setSelectedLists: (lists: IListInfo[]) => void;
+
+  selectedViews: IViewInfo[];
+  isSelected: (viewId: string) => boolean;
+  toggleView: (view: IViewInfo) => void;
 }
 
-export const useAppStore = create<IAppStore>((set) => ({
+export const useAppStore = create<IAppStore>((set, get) => ({
   test: "Valore iniziale",
   setTest: (test?: string) => {
     set(() => ({ test }));
@@ -58,4 +63,19 @@ export const useAppStore = create<IAppStore>((set) => ({
   setSelectedLists: (selectedLists: IListInfo[]) => {
     set(() => ({ selectedLists }));
   },
+
+  selectedViews: [],
+  toggleView: (view: IViewInfo) => {
+    console.log("Selected View info: ", view);
+    set(state => {
+      if (state.selectedViews?.findIndex(v => v.Id === view.Id) > -1) {
+        return { selectedViews: state.selectedViews.filter(v => v.Id !== view.Id) }; // Remove
+      } else {
+        return { selectedViews: [ ...state.selectedViews, view ] }; // Add
+      }
+    })
+  },
+  isSelected: (viewId: string) => {
+    return get().selectedViews?.findIndex(v => v.Id === viewId) > -1;
+  }
 }))

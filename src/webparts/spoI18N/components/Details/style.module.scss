@@ -1,0 +1,30 @@
+/* Style for details tag */
+.MpDetails {
+  margin: 0.5rem 0;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Style for summary tag */
+.MpDetails summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: .5rem;
+}
+
+.MpDetails .Content {
+  font-weight: bold;
+  cursor: pointer;
+  padding: .5rem;
+}
+
+/* Style for opened details tag */
+.MpDetails[open] {
+  background-color: #fff;
+}
+
+/* Style for opened summary tag */
+.MpDetails[open] summary {
+  border-bottom: 1px solid #ddd;
+}

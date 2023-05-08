@@ -90,6 +90,7 @@ export function ColumnsSelector() {
           items={columns}
           columns={tableColumns}
           layoutMode={DetailsListLayoutMode.justified}
+          getKey={(item) => item.Id}
         />
       </>
     }
