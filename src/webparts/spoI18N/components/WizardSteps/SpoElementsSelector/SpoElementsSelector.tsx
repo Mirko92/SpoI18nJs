@@ -2,8 +2,8 @@ import * as React from "react";
 
 import { Stack } from '@fluentui/react/lib/Stack';
 import { Checkbox } from '@fluentui/react/lib/Checkbox';
-import { Elements } from "../../models/Elements";
-import { useAppStore } from "../../store/store";
+import { Elements } from "../../../models/Elements";
+import { useAppStore } from "../../../store/store";
 
 // Used to add spacing between example checkboxes
 const stackTokens = { childrenGap: 10 };

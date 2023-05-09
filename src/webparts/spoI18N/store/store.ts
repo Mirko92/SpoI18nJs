@@ -23,8 +23,13 @@ export interface IAppStore {
   selectedLists: IListInfo[];
   setSelectedLists: (lists: IListInfo[]) => void;
 
+  views: Map<string, IViewInfo[]>;
+  setViews: (listId: string, views: IViewInfo[]) => void;
+
   selectedViews: IViewInfo[];
+  toggleAllViews: () => void;
   isSelected: (viewId: string) => boolean;
+  isAllSelected: (listId?: string) => boolean;
   toggleView: (view: IViewInfo) => void;
 }
 
@@ -64,7 +69,39 @@ export const useAppStore = create<IAppStore>((set, get) => ({
     set(() => ({ selectedLists }));
   },
 
+  views: new Map(),
+  setViews: (listId: string, newValue: IViewInfo[]) => {
+    set(state => {
+      const views = state.views.set(listId, newValue);
+      return { views }
+    });
+  },
+
   selectedViews: [],
+  isAllSelected: (listId?: string) => {
+    const { views, selectedViews } = get();
+    const selectedIds = selectedViews.map(sv => sv.Id);
+
+    if (listId) {
+      return views.get(listId)
+                  ?.every(lv => selectedIds.includes(lv.Id));
+    } else {
+      return selectedIds?.length === [...views.values()]?.flat()?.length;
+    }
+  },
+  toggleAllViews: () => {
+    set( ({views, selectedViews}) => {
+      const allViews = [...views.values()].flat();
+
+      if (allViews?.length === selectedViews?.length) {
+        return { selectedViews: [] };
+      } else {
+        return {
+          selectedViews: [...views.values()].flat()
+        }
+      }
+    });
+  },
   toggleView: (view: IViewInfo) => {
     console.log("Selected View info: ", view);
     set(state => {

@@ -3,4 +3,5 @@ export const enum Elements {
   CONTENT_TYPES = "CONTENT_TYPES",
   LISTS         = "LISTS",
   VIEWS         = "VIEWS",
+  CSV           = "CSV",
 }

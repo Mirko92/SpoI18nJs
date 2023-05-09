@@ -1,8 +1,8 @@
 import { IViewInfo } from "@pnp/sp/views";
 import * as React from "react";
-import { getViews } from "../../../../helpers/SharepointHelpers";
+import { getViews } from "../../../../../../helpers/SharepointHelpers";
 import { Checkbox } from "@fluentui/react/lib/Checkbox";
-import { useAppStore } from "../../store/store";
+import { useAppStore } from "../../../../store/store";
 import { Stack } from "@fluentui/react";
 
 interface IListViewsProps {
@@ -12,13 +12,11 @@ interface IListViewsProps {
 export const ListViews = React.forwardRef((props: IListViewsProps, ref) => {
   const { listId } = props; 
 
-  const [ views, setViews ] = React.useState<IViewInfo[]>();
-
   const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
 
-  const {toggleView, isSelected} = useAppStore(
-    ({ selectedViews, toggleView, isSelected }) => (
-      { selectedViews, toggleView, isSelected }
+  const {toggleView, isSelected, views, setViews} = useAppStore(
+    ({ selectedViews, toggleView, isSelected, views, setViews }) => (
+      { selectedViews, toggleView, isSelected, views, setViews }
     )
   );
 
@@ -29,7 +27,7 @@ export const ListViews = React.forwardRef((props: IListViewsProps, ref) => {
   React.useImperativeHandle(ref, () => {
     return {
       toggleAll: () => {
-        views.forEach(v => toggleView(v))
+        views.get(listId).forEach(v => toggleView(v))
       }
     };
   }, [views]);
@@ -38,7 +36,7 @@ export const ListViews = React.forwardRef((props: IListViewsProps, ref) => {
     try {
       setIsLoading(true);
       const views = await getViews(listId);
-      setViews(views);
+      setViews(listId, views);
     } finally {
       setIsLoading(false);
     }
@@ -54,11 +52,12 @@ export const ListViews = React.forwardRef((props: IListViewsProps, ref) => {
         ? <p>...loading...</p>
         : <Stack tokens={{childrenGap: 5}}>
           {
-            views?.map(v => (
+            views.get(listId)?.map(v => (
               <Checkbox 
-                checked={isSelected(v.Id)}
-                label={v.Title}  
-                onChange={(e) => _onChange(v)} 
+                key      = {`Checkbox${v.Id}`}
+                checked  = {isSelected(v.Id)}
+                label    = {v.Title}
+                onChange = {(e) => _onChange(v)}
               />
             ))
           }

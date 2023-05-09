@@ -1,9 +1,8 @@
 import * as React from "react";
-// import { useAppStore } from "../../store/store";
 import { DetailsList, DetailsListLayoutMode, IColumn, PrimaryButton, Stack, TextField } from "@fluentui/react";
-import { Chip } from "../Chip/Chip";
-import { getFieldsByGroupsAndInternalName } from "../../../../helpers/SharepointHelpers";
-import { useAppStore } from "../../store/store";
+import { useAppStore } from "../../../store/store";
+import { getFieldsByGroupsAndInternalName } from "../../../../../helpers/SharepointHelpers";
+import { Chip } from "../../../../../components/Chip/Chip";
 
 
 const tableColumns: IColumn[] = [
@@ -12,7 +11,7 @@ const tableColumns: IColumn[] = [
   { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200 },
 ];
 
-export function ColumnsSelector() {
+export function ColumnsStep() {
   const [ namePart, setNamePart   ] = React.useState<string>();
   const [ groupName, setGroupName ] = React.useState<string>();
   const [ groups, setGroups       ] = React.useState<string[]>([]);

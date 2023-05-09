@@ -1,21 +1,23 @@
 import { Stack, TextField, PrimaryButton, DetailsList, DetailsListLayoutMode, IColumn } from "@fluentui/react";
 import * as React from "react";
-import { Chip } from "../Chip/Chip";
-import { getAllLists } from "../../../../helpers/SharepointHelpers";
-import { useAppStore } from "../../store/store";
+import { Chip } from "../../../../../components/Chip/Chip";
+import { getAllLists } from "../../../../../helpers/SharepointHelpers";
+import { useAppStore } from "../../../store/store";
 
 const columns: IColumn[] = [
   { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 200 },
   { fieldName: "Description",   key: "Description",   name: "Description", minWidth: 200 },
 ];
 
-export function ListsSelector() {
+export function ListsStep() {
   const [ listName, setListName ] = React.useState<string>();
   const [ listNames, setListNames       ] = React.useState<string[]>([]);
 
-  const {allLists, setAllLists} = useAppStore( ({allLists, setAllLists}) => ({
-    allLists, setAllLists
-  }))
+  const {allLists, setAllLists} = useAppStore( 
+    ({allLists, setAllLists}) => ({
+      allLists, setAllLists
+    })
+  );
 
   function onAddGroup(e: React.FormEvent) {
     e.preventDefault();

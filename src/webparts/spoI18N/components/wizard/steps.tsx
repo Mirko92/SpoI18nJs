@@ -6,12 +6,13 @@ import { Text } from '@fluentui/react';
 import { Elements } from '../../models/Elements';
 
 // Step components
-import { SpoElementsSelector }  from '../SpoElementsSelector/SpoElementsSelector';
-import { ColumnsSelector }      from '../ColumnsSelector/ColumnsSelector';
-import { ContentTypesSelector } from '../ContentTypesSelector/ContentTypesSelector';
-import { ListsSelector }        from '../ListsSelector/ListsSelector';
-import { ViewsSelector }        from '../ViewsSelector/ViewsSelector';
-import { Logo } from '../../../../components/Logo';
+import { Logo }                 from '../../../../components/Logo';
+import { SpoElementsSelector }  from '../WizardSteps/SpoElementsSelector/SpoElementsSelector';
+import { ColumnsStep }          from '../WizardSteps/ColumnsStep/ColumnsStep';
+import { ContentTypesStep }     from '../WizardSteps/ContentTypesStep/ContentTypesStep';
+import { CsvStep }              from '../WizardSteps/CsvStep/CsvStep/CsvStep';
+import { ViewsStep }            from '../WizardSteps/ViewsStep/ViewsStep';
+import { ListsStep }            from '../WizardSteps/ListsStep/ListsStep';
 
 /**
  * Every available wizard step from Welcome to Finish
@@ -53,7 +54,7 @@ export const steps = [
           Filter and select the available <b>Columns</b> based on your requirements.
         </Text>
         
-        <ColumnsSelector />
+        <ColumnsStep />
       </>
     ),
   },
@@ -66,7 +67,7 @@ export const steps = [
           Filter and select the available <b>Content Types</b> based on your requirements.
         </Text>
 
-        <ContentTypesSelector />
+        <ContentTypesStep />
       </>
     ),
   },
@@ -79,7 +80,7 @@ export const steps = [
           Filter and select the available <b>Lists</b> based on your requirements.
         </Text>
         
-        <ListsSelector />
+        <ListsStep />
       </>
     ),
   },
@@ -92,7 +93,20 @@ export const steps = [
           Select the available <b>Views</b> based on your requirements.
         </Text>
         
-        <ViewsSelector />
+        <ViewsStep />
+      </>
+    ),
+  },
+  {
+    title: 'CSV',
+    conditionValue: Elements.CSV,
+    content: (
+      <>
+        <Text variant="medium">
+          Download or Edit here the <b>CSV file</b>.
+        </Text>
+        
+        <CsvStep />
       </>
     ),
   },

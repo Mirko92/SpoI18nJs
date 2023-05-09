@@ -1,8 +1,8 @@
 import * as React from "react";
 import { DetailsList, DetailsListLayoutMode, IColumn, PrimaryButton, Stack, TextField } from "@fluentui/react";
-import { Chip } from "../Chip/Chip";
-import { getAllContentTypeByGroups } from "../../../../helpers/SharepointHelpers";
-import { useAppStore } from "../../store/store";
+import { getAllContentTypeByGroups } from "../../../../../helpers/SharepointHelpers";
+import { useAppStore } from "../../../store/store";
+import { Chip } from "../../../../../components/Chip/Chip";
 
 
 const columns: IColumn[] = [
@@ -10,7 +10,7 @@ const columns: IColumn[] = [
   { fieldName: "Description",  key: "Description",  name: "Description", minWidth: 200 },
 ];
 
-export function ContentTypesSelector() {
+export function ContentTypesStep() {
   const [ groupName, setGroupName ] = React.useState<string>();
   const [ groups, setGroups       ] = React.useState<string[]>([]);
 
@@ -46,7 +46,7 @@ export function ContentTypesSelector() {
         <div>
           <form onSubmit={onAddGroup} >
             <TextField 
-              label="Group Name"
+              label="Category"
               value={groupName}
               onChange={(_, v) => setGroupName(v)} 
               description="Press 'enter' to add the group as filter!"

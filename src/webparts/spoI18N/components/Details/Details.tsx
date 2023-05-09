@@ -1,18 +1,28 @@
 import * as React from "react";
 import styles from "./style.module.scss";
 import { Checkbox } from "@fluentui/react";
+import { useAppStore } from "../../store/store";
 
 export interface IDetailsProps extends React.PropsWithChildren<any> {
+  listId: string;
   title: string; 
   onOpen?: () => void;
   onClose?: () => void;
-
-  isAllSelected?: boolean;
   onToggleAll?: (checked: boolean) => void;
 }
 
 export function Details(props: IDetailsProps) {
-  const { title, children, isAllSelected, onOpen, onClose, onToggleAll } = props; 
+  const { listId, title, children, onOpen, onClose, onToggleAll } = props; 
+
+  const [ checked, setChecked ] = React.useState<boolean>(false);
+
+  const {isAllSelected, selectedViews} = useAppStore( 
+    ({isAllSelected, selectedViews}) => ({isAllSelected, selectedViews})
+  );
+
+  React.useEffect(() => {
+    setChecked(isAllSelected(listId)) ;
+  }, [selectedViews])
 
   function onToggle(e: React.SyntheticEvent<HTMLDetailsElement, Event>) {
     const isOpen = (e.target as HTMLDetailsElement).open;
@@ -23,6 +33,7 @@ export function Details(props: IDetailsProps) {
       onClose?.();
     }
   }
+  
 
   function _onToggleAll(_: any, checked?: boolean) {
     onToggleAll?.(checked);
@@ -34,8 +45,8 @@ export function Details(props: IDetailsProps) {
         <div style={{display: 'flex'}}>
           <span>
             <Checkbox 
-              checked  = {isAllSelected}
-              title    = "Select/Unselect all"
+              checked  = {checked}
+              title    = {isAllSelected ? "Unselect all" : "Select all"}
               onChange = {_onToggleAll}
             />
           </span>
