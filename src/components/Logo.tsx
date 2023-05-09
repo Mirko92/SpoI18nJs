@@ -12,7 +12,7 @@ export function Logo() {
         color-interpolation-filters="sRGB"
         style={{margin: 'auto'}}
       >
-        <rect width="100%" height="100%" fill="#fff" className="background" />
+        <rect width="100%" height="100%" fill="none" className="background" />
         <rect
           width="100%"
           height="100%"

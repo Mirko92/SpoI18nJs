@@ -5,6 +5,11 @@
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
+  
+  background: #a39fe078;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px 2px #758bd3;
+  
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
