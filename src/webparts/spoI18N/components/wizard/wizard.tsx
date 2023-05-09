@@ -87,8 +87,8 @@ export const Wizard = () => {
         <Stack.Item align="end">
           {
             currentStep < wizardSteps.length - 1 
-            ? <PrimaryButton text="Next"    onClick={handleNextClick}   />
-            : <PrimaryButton text="Finish"  onClick={handleFinishClick} />
+            ? <PrimaryButton text="Next"    onClick={handleNextClick}   iconProps={{ iconName: 'ChevronRight' }} />
+            : <PrimaryButton text="Finish"  onClick={handleFinishClick} iconProps={{ iconName: 'SkypeCircleCheck' }}/>
           }
         </Stack.Item>
       </Stack>

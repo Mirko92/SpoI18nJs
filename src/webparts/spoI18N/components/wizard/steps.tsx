@@ -99,7 +99,6 @@ export const steps = [
   },
   {
     title: 'CSV',
-    conditionValue: Elements.CSV,
     content: (
       <>
         <Text variant="medium">
