@@ -28,7 +28,7 @@ export const ListViews = React.forwardRef((props: IListViewsProps, ref) => {
 
   React.useImperativeHandle(ref, () => {
     return {
-      selectAll: () => {
+      toggleAll: () => {
         views.forEach(v => toggleView(v))
       }
     };

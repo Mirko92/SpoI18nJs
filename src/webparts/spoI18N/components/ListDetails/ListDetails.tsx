@@ -7,7 +7,7 @@ interface IListDetailsProps {
   list: IListInfo;
 }
 
-export function ListDetails(props: IListDetailsProps) {
+export const ListDetails = React.forwardRef((props: IListDetailsProps, ref) => {
   const listViewsRef = React.useRef<typeof ListViews>();
 
   const { list } = props;
@@ -16,16 +16,20 @@ export function ListDetails(props: IListDetailsProps) {
     console.log`Loading views for: ${listId}`;
   }
   
-  function _onToggleAll(checked: boolean, listId: string) {
-    console.log("on toggle all", listViewsRef);
+  function _onToggleAll() {
     (listViewsRef.current as any).toggleAll();
   }
+
+
+  React.useImperativeHandle(ref, () => {
+    return { toggleAll: _onToggleAll }
+  }, [list]);
 
   return <Details 
     title       = {list.Title}
     onOpen      = {() => loadViews(list.Id)}
-    onToggleAll = {(checked) => _onToggleAll(checked, list.Id)}
+    onToggleAll = {() => _onToggleAll()}
   > 
     <ListViews listId={list.Id} ref={listViewsRef}/>
   </Details>
-}
+});
