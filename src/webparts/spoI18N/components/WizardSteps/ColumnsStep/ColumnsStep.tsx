@@ -1,49 +1,153 @@
 import * as React from "react";
-import { DetailsList, DetailsListLayoutMode, IColumn, PrimaryButton, Stack, TextField } from "@fluentui/react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  Checkbox,
+  DetailsList,
+  DetailsListLayoutMode,
+  IColumn,
+  IGroup,
+  PrimaryButton,
+  Stack,
+  TextField,
+  Selection,
+  SelectionMode,
+} from "@fluentui/react";
+import { IFieldInfo } from "@pnp/sp/fields";
 import { useAppStore } from "../../../store/store";
 import { getFieldsByGroupsAndInternalName } from "../../../../../helpers/SharepointHelpers";
 import { Chip } from "../../../../../components/Chip/Chip";
 
 
 const tableColumns: IColumn[] = [
-  { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 200 },
-  { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 200 },
-  { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200 },
+  { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 100,  maxWidth: 300, targetWidthProportion:3,  },
+  { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 200,  maxWidth: 300, targetWidthProportion:2,  },
+  { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200,  maxWidth: 200, targetWidthProportion:1,  },
 ];
 
-export function ColumnsStep() {
-  const [ namePart, setNamePart   ] = React.useState<string>();
-  const [ groupName, setGroupName ] = React.useState<string>();
-  const [ groups, setGroups       ] = React.useState<string[]>([]);
-  
-  const {columns, setColumns} = useAppStore( 
-    ({ columns, setColumns }) => ({ columns, setColumns })
-  );
 
-  function onAddGroup(e: React.FormEvent) {
+export function ColumnsStep() {
+  // Store
+  const [ 
+    filters,setFilters,
+    fields, setFields, 
+    selectedFields, setSelectedFields,
+   ] = useAppStore( 
+    state => [ 
+      state.fieldsFilters,  state.setIFieldsFiters,
+      state.fields,         state.setFields, 
+      state.selectedFields, state.setSelectedFields 
+    ]
+  );
+  
+  //#region Filters and search
+
+  // Search form
+  const [ groupName, setGroupName   ] = useState<string>();
+
+  function setNameFilter(name: string) {
+    setFilters({
+      ...filters,
+      name
+    });
+  }
+  /**
+   * Add a group to filters
+   */
+  function onAddGroup(e: FormEvent) {
     e.preventDefault();
 
-    if (!groups.includes(groupName)) {
-      setGroups(gs => [...gs, groupName]);
+    if (!filters.groups?.includes(groupName)) {
+      setFilters({
+        ...filters,
+        groups: [...(filters.groups||[]), groupName]
+      });
     }
 
     setGroupName("");
+    
   }
 
+  /**
+   * Remove a group from filters
+   */
   function onRemoveGroup(groupName: string) {
-    setGroups(gs => gs.filter(g => g !== groupName));
+    setFilters({
+      ...filters,
+      groups: filters.groups.filter(g => g !== groupName)
+    });
   }
-
   
+  /**
+   * Perform query to retrieve Fields from SPO
+   */
   async function doSearch() {
     const result = await getFieldsByGroupsAndInternalName(
-      groups, namePart
+      filters.groups, filters.name
     );
 
-    console.debug("result", result);
-
-    setColumns(result)
+    setFields(result);
+    _selection.setAllSelected(true);
   }
+
+  //#endregion
+
+  //#region Table groups managment
+  const [ columnGroups, setColumnGroups ] = useState<IGroup[]>();
+  const [ showGrouped, setShowGrouped ] = useState<boolean>(false);
+
+  function makeGroups() {
+    const _groups = fields
+                      .sort( (x,y) => x.Group.localeCompare(y.Group))
+                      .reduce( (acc, x, index) => {
+                        const existingGroup = acc?.find( (a: IGroup) => a.key === x.Group);
+
+                        if (!existingGroup) {
+                          return [
+                            ...acc,
+                            { key: x.Group, name: x.Group, startIndex: index, count: 1 , level: 0}
+                          ]
+                        } else {
+                          existingGroup.count++;
+                        }
+
+                        return acc;
+                      }, [] as IGroup[]);
+
+    setColumnGroups(_groups);
+
+    console.log("Groups: ", _groups);
+  }
+  //#endregion
+
+  //#region Table selection managment
+  const _selection = useMemo(() => new Selection<IFieldInfo>({
+    onSelectionChanged: () => {
+      console.log("Selection changed", _selection);
+      setSelectedFields(_selection.getSelection());
+    },
+    getKey: (item) => item.Id,
+  }), []);
+  
+  function _restoreSelected() {
+    selectedFields.forEach(
+      si => _selection.setKeySelected(si.Id, true, true)
+    );
+  }
+  //#endregion
+
+  useEffect(() => {
+    if (showGrouped) {
+      makeGroups();
+    } else {
+      setColumnGroups(null);
+    }
+  }, [showGrouped, fields]);
+
+  useEffect(() => {
+    if (selectedFields?.length) {
+      _restoreSelected();
+    }
+  }, []);
 
   return <Stack.Item align="stretch">
     <Stack tokens={{childrenGap: 20}} horizontalAlign="stretch">
@@ -54,20 +158,20 @@ export function ColumnsStep() {
             label="Group Name"
             value={groupName}
             onChange={(_, v) => setGroupName(v)} 
-            description="Press 'enter' to add the group as filter!"
+            description="Press 'enter' to filter fields by groups!"
           />
         </form>
 
         <Stack tokens={{childrenGap: 10}} horizontal>
-          { groups?.map( g => <Chip text={g} onRemove={onRemoveGroup} />)}
+          { filters.groups?.map( g => <Chip text={g} onRemove={onRemoveGroup} />)}
         </Stack>
       </div>
 
       <TextField 
-        label="Name Part" 
-        value={namePart}
-        onChange={(_, v) => setNamePart(v)}
-        description="This filter is case sensitive!"
+        label="Filter Name" 
+        value={filters.name}
+        onChange={(_, v) => setNameFilter(v)}
+        description="This filter is case sensitive! It'll be used as a 'contains' query."
       />
 
       <Stack.Item align="center">
@@ -82,15 +186,38 @@ export function ColumnsStep() {
     </Stack>
 
     {
-      !!columns?.length && <>
-        <h3>Columns found: {columns.length}</h3>
+      !!fields?.length && <>
+        <Stack horizontal verticalAlign="center" tokens={{childrenGap: 20}}>
+          <h3>Fields found: {fields.length}</h3>
+
+          <Checkbox 
+            label    = "Show grouped per group"
+            checked  = {showGrouped}
+            onChange = {(_, g) => setShowGrouped(g)}
+          />
+
+          <Stack.Item >
+            <h3>Selected fields: {selectedFields?.length}</h3>
+          </Stack.Item>
+        </Stack>
   
-        <DetailsList
-          items={columns}
-          columns={tableColumns}
-          layoutMode={DetailsListLayoutMode.justified}
-          getKey={(item) => item.Id}
-        />
+        <div>
+          <DetailsList
+            items         = {fields}
+            columns       = {tableColumns}
+            getKey        = {(item) => item.Id}
+
+            groups        = {columnGroups}
+            groupProps    = {{isAllGroupsCollapsed: true}}
+
+            selection     = {_selection as any}
+            selectionMode = {SelectionMode.multiple}
+            selectionPreservedOnEmptyClick
+
+            compact
+            layoutMode = {DetailsListLayoutMode.justified}
+          />
+        </div>
       </>
     }
   </Stack.Item>;

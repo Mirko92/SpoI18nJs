@@ -7,7 +7,7 @@
   },
   "main": "lib/index.js",
   "scripts": {
-    "debug"     : "gulp serve --nobrowser",
+    "start"     : "gulp serve --nobrowser",
     "browser"   : "gulp serve",
     "build"     : "gulp bundle",
     "clean"     : "gulp clean",

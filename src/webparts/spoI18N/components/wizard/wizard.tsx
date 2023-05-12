@@ -3,7 +3,6 @@ import {
   Stack,
   Text,
   Separator,
-  CommandBarButton,
   Dialog,
   DialogType,
   DialogFooter,
@@ -25,10 +24,12 @@ export const Wizard = () => {
 
   const handleNextClick = React.useCallback(() => {
     setCurrentStep((prevCurrentStep) => (prevCurrentStep + 1) % wizardSteps.length);
+    titleRef.current.scrollIntoView();
   }, [setCurrentStep]);
 
   const handlePrevClick = React.useCallback(() => {
     setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
+    titleRef.current.scrollIntoView();
   }, [setCurrentStep]);
 
   const handleFinishClick = React.useCallback(() => {
@@ -51,13 +52,18 @@ export const Wizard = () => {
     });
   }, [selectedElements]);
 
+  const titleRef = React.useRef<HTMLDivElement>();
 
   return (
     <>
     
       <Stack horizontalAlign="center" style={{minHeight: "360px"}}>
         <Stack.Item align="center">
-          <Text variant="xxLarge">{wizardSteps[currentStep].title}</Text>
+          <div ref={titleRef}>
+            <Text variant="xxLarge">
+              {wizardSteps[currentStep].title}
+            </Text>
+          </div>
         </Stack.Item>
 
         {wizardSteps[currentStep].content}
@@ -75,7 +81,8 @@ export const Wizard = () => {
           {
             currentStep > 0 && 
             (
-              <CommandBarButton
+              <PrimaryButton
+                primary
                 iconProps={{ iconName: 'ChevronLeft' }}
                 text="Back"
                 onClick={handlePrevClick}

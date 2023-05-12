@@ -17,7 +17,7 @@ export function CsvStep() {
   // const [ targetLocales, setTargetLocales] = React.useState<string[]>();
 
   const {columns, contentTypes, selectedLists, selectedViews } = useAppStore(
-    ({columns, contentTypes, selectedLists, selectedViews }) => 
+    ({fields: columns, contentTypes, selectedLists, selectedViews }) => 
       ({columns, contentTypes, selectedLists, selectedViews })
   );
 

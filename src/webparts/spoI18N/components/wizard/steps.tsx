@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from '../SpoI18N.module.scss';
+import styles from '../SpoI18n/SpoI18N.module.scss';
 
 import { Text } from '@fluentui/react';
 

@@ -5,14 +5,24 @@ import { IFieldInfo }       from '@pnp/sp/fields';
 import { IViewInfo }        from '@pnp/sp/views';
 import { IContentTypeInfo } from '@pnp/sp/content-types';
 
+interface IFieldsFilters {
+  name?: string;
+  groups?: string[];
+}
 export interface IAppStore {
   test: string; 
 
   selectedElements: Elements[];
   setSelectedElements: (selectedElements: Elements[]) => any;
 
-  columns: IFieldInfo[];
-  setColumns: (columns: IFieldInfo[]) => void;
+  fieldsFilters: IFieldsFilters;
+  setIFieldsFiters: (fieldsFilters: IFieldsFilters) => void;
+
+  fields: IFieldInfo[];
+  setFields: (fields: IFieldInfo[]) => void;
+
+  selectedFields: IFieldInfo[];
+  setSelectedFields: (fields: IFieldInfo[]) => void;
 
   contentTypes: IContentTypeInfo[];
   setContentTypes: (contentTypes: IContentTypeInfo[]) => void;
@@ -49,9 +59,19 @@ export const useAppStore = create<IAppStore>((set, get) => ({
     set(() => ({ selectedElements }));
   },
 
-  columns: [],
-  setColumns: (columns: IFieldInfo[]) => {
-    set(() => ({ columns }));
+  fieldsFilters: {},
+  setIFieldsFiters: (fieldsFilters: IFieldsFilters) => {
+    set(() => ({ fieldsFilters }));
+  },
+
+  fields: [],
+  setFields: (fields: IFieldInfo[]) => {
+    set(() => ({ fields }));
+  },
+
+  selectedFields: [],
+  setSelectedFields: (selectedFields: IFieldInfo[]) => {
+    set(() => ({ selectedFields }));
   },
 
   contentTypes: [],
