@@ -9,6 +9,14 @@ interface IFieldsFilters {
   name?: string;
   groups?: string[];
 }
+
+interface IContentTypeFilters {
+  groups?: string[]; 
+}
+
+interface IListsFilters {
+  lists?: string[];
+}
 export interface IAppStore {
   test: string; 
 
@@ -24,8 +32,17 @@ export interface IAppStore {
   selectedFields: IFieldInfo[];
   setSelectedFields: (fields: IFieldInfo[]) => void;
 
+  contentTypesFilters: IContentTypeFilters;
+  setContentTypesFilters: (contentTypesFilters: IContentTypeFilters) => void;
+
   contentTypes: IContentTypeInfo[];
   setContentTypes: (contentTypes: IContentTypeInfo[]) => void;
+  
+  selectedContentTypes: IContentTypeInfo[];
+  setSelectedContentTypes: (selectedContentTypes: IContentTypeInfo[]) => void;
+
+  listsFilters: IListsFilters;
+  setListsFilters: (setListsFilters: IListsFilters) => void;
 
   allLists: IListInfo[];
   setAllLists: (lists: IListInfo[]) => void;
@@ -74,9 +91,25 @@ export const useAppStore = create<IAppStore>((set, get) => ({
     set(() => ({ selectedFields }));
   },
 
+  
+  contentTypesFilters: {},
+  setContentTypesFilters: (contentTypesFilters: IContentTypeFilters) => {
+    set({contentTypesFilters})
+  },
+
   contentTypes: [],
   setContentTypes: (contentTypes: IContentTypeInfo[]) => {
     set(() => ({ contentTypes }));
+  },
+
+  selectedContentTypes: [],
+  setSelectedContentTypes: (selectedContentTypes: IContentTypeInfo[]) => {
+    set(() => ({ selectedContentTypes }));
+  },
+
+  listsFilters: {},
+  setListsFilters: (listsFilters: IListsFilters) => {
+    set(() => ({listsFilters}))
   },
 
   allLists: [],

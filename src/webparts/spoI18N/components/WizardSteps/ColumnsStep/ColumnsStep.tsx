@@ -11,6 +11,7 @@ import {
   TextField,
   Selection,
   SelectionMode,
+  ConstrainMode,
 } from "@fluentui/react";
 import { IFieldInfo } from "@pnp/sp/fields";
 import { useAppStore } from "../../../store/store";
@@ -19,9 +20,9 @@ import { Chip } from "../../../../../components/Chip/Chip";
 
 
 const tableColumns: IColumn[] = [
-  { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 100,  maxWidth: 300, targetWidthProportion:3,  },
-  { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 200,  maxWidth: 300, targetWidthProportion:2,  },
-  { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200,  maxWidth: 200, targetWidthProportion:1,  },
+  { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 100,  maxWidth: 300, flexGrow:3,  },
+  { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 200,  maxWidth: 300, flexGrow:2,  },
+  { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200,  maxWidth: 200, flexGrow:1,  },
 ];
 
 
@@ -215,7 +216,8 @@ export function ColumnsStep() {
             selectionPreservedOnEmptyClick
 
             compact
-            layoutMode = {DetailsListLayoutMode.justified}
+            layoutMode    = {DetailsListLayoutMode.fixedColumns}
+            constrainMode = {ConstrainMode.unconstrained}
           />
         </div>
       </>

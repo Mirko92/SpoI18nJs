@@ -37,7 +37,7 @@ export function getAllContentTypeByGroups(groupName?: string[]) {
 
     _cts = _cts.filter(groupFilter)
   }
-  return _cts.select("Id", "Name", "Description")();
+  return _cts.select("Id", "Name", "Description", "Group")();
 }
 
 export function getAllLists(listNames?: string[]) {
