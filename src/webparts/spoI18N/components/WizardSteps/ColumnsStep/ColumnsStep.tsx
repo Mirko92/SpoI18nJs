@@ -188,7 +188,7 @@ export function ColumnsStep() {
 
     {
       !!fields?.length && <>
-        <Stack horizontal verticalAlign="center" tokens={{childrenGap: 20}}>
+        <Stack horizontal horizontalAlign="space-between" verticalAlign="center" tokens={{childrenGap: 20}}>
           <h3>Fields found: {fields.length}</h3>
 
           <Checkbox 
@@ -196,10 +196,6 @@ export function ColumnsStep() {
             checked  = {showGrouped}
             onChange = {(_, g) => setShowGrouped(g)}
           />
-
-          <Stack.Item >
-            <h3>Selected fields: {selectedFields?.length}</h3>
-          </Stack.Item>
         </Stack>
   
         <div>

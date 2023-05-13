@@ -161,7 +161,7 @@ export function ContentTypesStep() {
 
       {
         !!contentTypes?.length && <>
-          <Stack horizontal verticalAlign="center" tokens={{childrenGap: 20}}>
+          <Stack horizontal horizontalAlign="space-between" verticalAlign="center" tokens={{childrenGap: 20}}>
             <h3>Content Types found: {contentTypes.length}</h3>
 
             <Checkbox 
@@ -169,10 +169,6 @@ export function ContentTypesStep() {
               checked  = {showGrouped}
               onChange = {(_, g) => setShowGrouped(g)}
             />
-
-            <Stack.Item >
-              <h3>Selected Content Types: {selectedCts?.length}</h3>
-            </Stack.Item>
           </Stack>
     
           <DetailsList

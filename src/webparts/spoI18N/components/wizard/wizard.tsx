@@ -1,22 +1,33 @@
 import * as React from 'react';
 import {
   Stack,
-  Text,
-  Separator,
   Dialog,
   DialogType,
   DialogFooter,
   PrimaryButton,
+  Pivot,
+  PivotItem,
 } from '@fluentui/react';
 
 import { useAppStore } from '../../store/store';
 import { steps } from './steps';
+import { Elements } from '../../models/Elements';
 
 export interface IWizardProps {
 }
 
 export const Wizard = () => {
-  const selectedElements = useAppStore(state => state.selectedElements);
+  const [
+    selectedElements, fields,cts,lists,views
+  ] = useAppStore(
+    state => ([
+      state.selectedElements,
+      state.selectedFields,
+      state.selectedContentTypes,
+      state.selectedLists,
+      state.selectedViews
+    ])
+  );
 
   const [ wizardSteps, setWizardSteps ]   = React.useState<any[]>(steps);
   const [ currentStep, setCurrentStep ]   = React.useState(0);
@@ -24,12 +35,10 @@ export const Wizard = () => {
 
   const handleNextClick = React.useCallback(() => {
     setCurrentStep((prevCurrentStep) => (prevCurrentStep + 1) % wizardSteps.length);
-    titleRef.current.scrollIntoView();
   }, [setCurrentStep]);
 
   const handlePrevClick = React.useCallback(() => {
     setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
-    titleRef.current.scrollIntoView();
   }, [setCurrentStep]);
 
   const handleFinishClick = React.useCallback(() => {
@@ -40,6 +49,17 @@ export const Wizard = () => {
     setIsDialogOpen(false);
     setCurrentStep(0);
   }, []);
+
+  function getCount(type: Elements) {
+    const elements: Record<string, number> = {
+      [Elements.COLUMNS]      : fields?.length,
+      [Elements.CONTENT_TYPES]: cts?.length,
+      [Elements.LISTS]        : lists?.length,
+      [Elements.VIEWS]        : views?.length,
+    }
+
+    return elements[type] as number;
+  }
 
   /**
    * It filters the available steps based on the selection elements to translate.
@@ -52,50 +72,62 @@ export const Wizard = () => {
     });
   }, [selectedElements]);
 
-  const titleRef = React.useRef<HTMLDivElement>();
-
   return (
     <>
     
-      <Stack horizontalAlign="center" style={{minHeight: "360px"}}>
-        <Stack.Item align="center">
-          <div ref={titleRef}>
-            <Text variant="xxLarge">
-              {wizardSteps[currentStep].title}
-            </Text>
-          </div>
-        </Stack.Item>
-
-        {wizardSteps[currentStep].content}
-      </Stack>
-      <Separator />
-
       <Stack 
-        enableScopedSelectors 
-        horizontal 
-        horizontalAlign="space-between" 
-        verticalAlign="center" 
-        tokens={{ childrenGap: 20 }}
+        horizontal
+        horizontalAlign="space-between"
+        verticalAlign="center"
+        tokens={{ childrenGap: 5 }}
       >
-        <Stack.Item align="start">
-          {
-            currentStep > 0 && 
-            (
-              <PrimaryButton
-                primary
-                iconProps={{ iconName: 'ChevronLeft' }}
-                text="Back"
-                onClick={handlePrevClick}
-              />
-            )
-          }
+        <Stack.Item align='start'>
+          <PrimaryButton
+            primary
+            iconProps = {{ iconName: 'ChevronLeft' }}
+            text      = "Back"
+            onClick   = {handlePrevClick}
+            disabled  = {!currentStep}
+          />
         </Stack.Item>
 
-        <Stack.Item align="end">
+        <Pivot 
+          aria-label="Wizard steps" 
+          selectedKey={String(currentStep)}
+          onLinkClick={(item) => setCurrentStep(+item.props.itemKey)}
+        >
+          {
+            wizardSteps?.map((s,i) => (
+              <PivotItem 
+                itemKey    = {i.toString()}
+                headerText = {s.title}
+                itemCount  = {getCount(s.conditionValue)}
+                itemIcon   = {s.icon}
+              >
+                <Stack 
+                  horizontalAlign="center" 
+                  style={{minHeight: "360px"}}
+                >
+                  {s.content}
+                </Stack>
+              </PivotItem>
+            ))
+          }
+        </Pivot>
+
+        <Stack.Item align='start'>
           {
             currentStep < wizardSteps.length - 1 
-            ? <PrimaryButton text="Next"    onClick={handleNextClick}   iconProps={{ iconName: 'ChevronRight' }} />
-            : <PrimaryButton text="Finish"  onClick={handleFinishClick} iconProps={{ iconName: 'SkypeCircleCheck' }}/>
+            ? <PrimaryButton 
+                text="Next"    
+                onClick={handleNextClick}   
+                iconProps={{ iconName: 'ChevronRight' }} 
+              />
+            : <PrimaryButton 
+                text="Finish"  
+                onClick={handleFinishClick} 
+                iconProps={{ iconName: 'SkypeCircleCheck' }}
+              />
           }
         </Stack.Item>
       </Stack>

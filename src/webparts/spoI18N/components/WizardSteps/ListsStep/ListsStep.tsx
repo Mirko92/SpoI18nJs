@@ -128,13 +128,9 @@ export function ListsStep() {
 
       {
         !!allLists?.length && <>
-          <Stack horizontal verticalAlign="center" tokens={{childrenGap: 20}}>
+          <div>
             <h3>Lists found: {allLists.length}</h3>
-
-            <Stack.Item >
-              <h3>Selected lists: {selectedLists?.length}</h3>
-            </Stack.Item>
-          </Stack>
+          </div>
 
           <DetailsList
             items   = {allLists}

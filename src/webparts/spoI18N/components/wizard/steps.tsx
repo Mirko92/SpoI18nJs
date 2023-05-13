@@ -19,7 +19,7 @@ import { ListsStep }            from '../WizardSteps/ListsStep/ListsStep';
  */
 export const steps = [
   {
-    title: '',
+    title: 'Welcome',
     content: (
       <>
         
@@ -36,18 +36,14 @@ export const steps = [
     ),
   },
   {
-    title: 'Elements selection',
-    content: (
-      <>
-        <Text variant="medium">Step 1: Spo Elements selection</Text>
-        
-        <SpoElementsSelector />
-      </>
-    ),
+    title: 'Elements',
+    icon: 'MultiSelect',
+    content: <SpoElementsSelector />,
   },
   {
-    title: 'Columns selection',
+    title: 'Site Fields',
     conditionValue: Elements.COLUMNS,
+    icon: 'TextField',
     content: (
       <>
         <Text variant="medium">
@@ -59,8 +55,9 @@ export const steps = [
     ),
   },
   {
-    title: 'Content types selection',
+    title: 'Content types',
     conditionValue: Elements.CONTENT_TYPES,
+    icon: 'HomeGroup',
     content: (
       <>
         <Text variant="medium">
@@ -72,8 +69,9 @@ export const steps = [
     ),
   },
   {
-    title: 'List selection',
+    title: 'Lists',
     conditionValue: Elements.LISTS,
+    icon: 'ViewList',
     content: (
       <>
         <Text variant="medium">
@@ -85,8 +83,9 @@ export const steps = [
     ),
   },
   {
-    title: 'Views selection',
+    title: 'Views',
     conditionValue: Elements.VIEWS,
+    icon: 'PageListFilter',
     content: (
       <>
         <Text variant="medium">
@@ -99,6 +98,7 @@ export const steps = [
   },
   {
     title: 'CSV',
+    icon: 'PageData',
     content: (
       <>
         <Text variant="medium">
