@@ -56,3 +56,7 @@ export function getViews(listId: string) {
   let _views = getSP().web.lists.getById(listId).views;
   return _views();
 }
+
+export function getAvailableLocales() {
+  
+}

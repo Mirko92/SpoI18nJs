@@ -1,11 +1,25 @@
-import { IBasePickerSuggestionsProps, ITag, PrimaryButton, Stack, TagPicker } from "@fluentui/react";
+import {
+  ComboBox,
+  CompoundButton,
+  IBasePickerSuggestionsProps,
+  IComboBoxOption,
+  ITag,
+  Stack,
+  TagPicker,
+} from "@fluentui/react";
 import * as React from "react";
 import { useAppStore } from "../../../../store/store";
-import { convertObjectToCSV } from "../../../../../../helpers/CsvHelpers";
+import { CsvWriter, convertObjectToCSV } from "../../../../../../helpers/CsvHelpers";
 import { downloadCSV } from "../../../../../../helpers/CsvHelpers";
 import { ILocale } from "../../../../models/ILocale";
 
 const locales: ILocale[] = require("../../../../assets/Locales.json");
+
+const localesOptions: IComboBoxOption[] = locales.map( l => ({
+  key  : l.label,
+  text : l.description,
+  title: l.code,
+}));
 
 const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
   suggestionsHeaderText: 'Suggested locales',
@@ -14,22 +28,66 @@ const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
 
 export function CsvStep() {
   // const [ defaultLocale, setDefaultLocale] = React.useState<string>();
-  // const [ targetLocales, setTargetLocales] = React.useState<string[]>();
+  const [ targetLocales, setTargetLocales] = React.useState<ITag[]>();
 
-  const {columns, contentTypes, selectedLists, selectedViews } = useAppStore(
-    ({fields: columns, contentTypes, selectedLists, selectedViews }) => 
-      ({columns, contentTypes, selectedLists, selectedViews })
+  const [ defaultLocale ] = useAppStore(state => ([state.locale]));
+
+  const [
+    selectedFields, 
+    selectedCts, 
+    selectedLists, 
+  ] = useAppStore(
+    state => 
+      ([
+        state.selectedFields, 
+        state.selectedContentTypes, 
+        state.selectedLists, 
+        state.selectedViews 
+      ])
   );
 
   function onDownloadCsv() {
-    const data = [
-           columns.map( c => ({key: '', default: ''})),
-      contentTypes.map(ct => ({key: '', default: ''})),
-      selectedLists.map(l => ({key: '', default: ''})),
-      selectedViews.map(v => ({key: '', default: ''})),
-    ];
 
-    const csv = convertObjectToCSV(data);
+    const keys = targetLocales.map(tl => tl.key)
+    const csvWriter = new CsvWriter(locales.filter(l => keys.includes(l.label)));
+
+    csvWriter.addHeader();
+    
+    selectedFields.forEach(sf => {
+      csvWriter.addRow(
+        `00000000000000000000000000000000_FieldTitle${sf.InternalName}`,
+        sf.Title
+      );
+    });
+    
+    selectedCts.forEach(ct => {
+      const ctName = ct.Name;
+      const ctDesc = ct.Description?.length ? ct.Description : `Description of ${ctName}`;
+
+      csvWriter.addRow(
+        `00000000000000000000000000000000_CTName${ct.Id}`,
+        ctName
+      );
+      
+      csvWriter.addRow(
+        `00000000000000000000000000000000_CTDesc${ct.Id}`,
+        ctDesc
+      );
+    });
+
+    selectedLists.forEach(l => {
+      const lName = l.Title;
+      const lDesc = l.Description?.length ? l.Description : `Description of ${lName}`;
+      const lKey  = l.Id.replaceAll('-', '');
+
+      csvWriter.addRow( `${lKey}_ListTitle`,        lName );
+      csvWriter.addRow( `${lKey}_ListDescription`,  lDesc );
+
+      // TODO: Ho dimenticato i maledetti field della lista (la cosa più importante tra l'altro)
+      // TODO: Probabilmente è giusto inserire le view in questo punto
+    });
+
+    const csv = convertObjectToCSV(csvWriter.result);
 
     downloadCSV(csv, 'TODO_NOME_FILE_CSV');
   }
@@ -51,34 +109,37 @@ export function CsvStep() {
       }
     }
 
-    return [ ...startMatches, ...includesMatches].map<ITag>(x => ({ key: x.code, name: x.description}));
+    return [ ...startMatches, ...includesMatches].map<ITag>(x => ({ key: x.label, name: x.description}));
   };
 
   function onTargetLocaleChange(items?: ITag[]) {
     console.log("onTargetLocaleChange", items);
+    setTargetLocales(items);
   }
 
   return <Stack.Item align="stretch">
 
     <Stack tokens={{childrenGap: 20}}>
 
+    <Stack horizontal tokens={{childrenGap: 20}} verticalAlign="center">
       <div>
-        <label htmlFor="defaultLocalePicker">
-          Default locale:
-        </label>
-        <TagPicker
-          removeButtonAriaLabel  = "Remove"
-          selectionAriaLabel     = "Selected locales"
-          onResolveSuggestions   = {filterSuggestedTags}
-          pickerSuggestionsProps = {pickerSuggestionsProps}
-          onChange               = {onTargetLocaleChange}
-          inputProps={{
-            id:"defaultLocalePicker"
-          }}
+        <ComboBox
+          label="Default locale"
+          options={localesOptions}
+          allowFreeInput
+          autoComplete="on"
+          defaultSelectedKey={defaultLocale}
         />
       </div>
-      <div>
-        <label htmlFor="targetLocalesPicker">
+
+      <Stack.Item grow >
+        <label htmlFor="targetLocalesPicker" 
+          style={{ 
+            fontWeight: 600,
+            padding   : "5px 0",
+            display   : "block",
+          }}
+        >
           Target locales:
         </label>
         <TagPicker
@@ -87,15 +148,40 @@ export function CsvStep() {
           onResolveSuggestions   = {filterSuggestedTags}
           pickerSuggestionsProps = {pickerSuggestionsProps}
           onChange               = {onTargetLocaleChange}
+          defaultSelectedItems   = {targetLocales}
           inputProps={{
             id:"targetLocalesPicker"
           }}
+          styles={{input: {background: "white"}}}
         />
-      </div>
+      </Stack.Item>
+    </Stack>
 
       <Stack tokens={{childrenGap: 20}} horizontal horizontalAlign="center">
-        <PrimaryButton text="Edit CSV"      onClick={onDownloadCsv} iconProps={{iconName: 'EditNote'}}/>
-        <PrimaryButton text="Download CSV"  onClick={onDownloadCsv} iconProps={{iconName: 'DownloadDocument'}}/>
+        <CompoundButton primary 
+          iconProps={{iconName: 'EditNote'}}
+          secondaryText="Open popup to edit the CSV." 
+          onClick={onDownloadCsv} 
+        >
+          Edit CSV
+        </CompoundButton>
+        
+        <CompoundButton primary 
+          iconProps={{iconName: 'Download'}}
+          secondaryText="Download the file to edit in local."
+          onClick={onDownloadCsv} 
+        >
+          Download CSV
+        </CompoundButton>
+
+        <CompoundButton primary 
+          iconProps={{iconName: 'Upload'}}
+          secondaryText="Upload the edited file."
+          onClick={onDownloadCsv} 
+        >
+          Upload CSV
+        </CompoundButton>
+      
       </Stack>
     </Stack>
 

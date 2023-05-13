@@ -21,26 +21,14 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
 
   private _isDarkTheme: boolean = false;
 
-  public render(): void {
-    const element: React.ReactElement<ISpoI18NProps> = React.createElement(
-      SpoI18N,
-      {
-        description: this.properties.description,
-        isDarkTheme: this._isDarkTheme,
-      }
-    );
-
-    getSP(this.context);
-    // getGraph(this.context);
-    ReactDom.render(element, this.domElement);
-  }
+  private _defaultLocale: string = "";
 
   protected onInit(): Promise<void> {
+    this._defaultLocale = this.context.pageContext.cultureInfo.currentCultureName;
+    console.log("Default locale: ", this._defaultLocale);
     this._getEnvironmentMessage();
     return Promise.resolve();
   }
-
-
 
   private _getEnvironmentMessage(): Promise<string> {
     if (!!this.context.sdks.microsoftTeams) { // running in Teams, office.com or Outlook
@@ -115,5 +103,21 @@ export default class SpoI18NWebPart extends BaseClientSideWebPart<ISpoI18NWebPar
         }
       ]
     };
+  }
+  
+
+  public render(): void {
+    const element: React.ReactElement<ISpoI18NProps> = React.createElement(
+      SpoI18N,
+      {
+        description: this.properties.description,
+        isDarkTheme: this._isDarkTheme,
+        defaultLocale: this._defaultLocale
+      }
+    );
+
+    getSP(this.context);
+    // getGraph(this.context);
+    ReactDom.render(element, this.domElement);
   }
 }
