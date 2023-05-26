@@ -2,24 +2,13 @@ import {
   Stack,
   TextField,
   PrimaryButton,
-  DetailsList,
-  DetailsListLayoutMode,
-  IColumn,
-  Selection,
-  SelectionMode,
-  ConstrainMode,
 } from "@fluentui/react";
 import * as React from "react";
 import { Chip } from "../../../../../components/Chip/Chip";
 import { getAllLists } from "../../../../../helpers/SharepointHelpers";
 import { useAppStore } from "../../../store/store";
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import { IListInfo } from "@pnp/sp/lists";
-
-const columns: IColumn[] = [
-  { fieldName: "Title",         key: "Title",         name: "Title",       minWidth: 350, flexGrow: 3 },
-  { fieldName: "Description",   key: "Description",   name: "Description", minWidth: 200, flexGrow: 5 },
-];
+import { FormEvent, useState } from "react";
+import { ListDetails } from "./ListDetails/ListDetails";
 
 export function ListsStep() {
 
@@ -27,7 +16,6 @@ export function ListsStep() {
   const [
     filters, setFilters,
     allLists, setAllLists,
-    selectedLists, setSelectedLists
   ] = useAppStore( 
     state => ([
       state.listsFilters, state.setListsFilters,
@@ -35,7 +23,6 @@ export function ListsStep() {
       state.selectedLists, state.setSelectedLists
     ])
   );
-
   
   //#region Filters and search
   const [ listName, setListName   ] = useState<string>();
@@ -75,27 +62,6 @@ export function ListsStep() {
   }
   //#endregion
 
-  //#region Table selection managment
-  const _selection = useMemo(() => new Selection<IListInfo>({
-    onSelectionChanged: () => {
-      console.log("Selection changed", _selection);
-      setSelectedLists(_selection.getSelection());
-    },
-    getKey: (item) => item.Id,
-  }), []);
-  
-  function _restoreSelected() {
-    selectedLists.forEach(
-      si => _selection.setKeySelected(si.Id, true, true)
-    );
-  }
-  //#endregion
-
-  useEffect(() => {
-    if (selectedLists?.length) {
-      _restoreSelected();
-    }
-  }, []);
 
   return (
     <Stack.Item align="stretch">
@@ -132,19 +98,7 @@ export function ListsStep() {
             <h3>Lists found: {allLists.length}</h3>
           </div>
 
-          <DetailsList
-            items   = {allLists}
-            columns = {columns}
-            getKey  = {(item) => item.Id}
-
-            selection     = {_selection as any}
-            selectionMode = {SelectionMode.multiple}
-            selectionPreservedOnEmptyClick
-
-            compact
-            layoutMode    = {DetailsListLayoutMode.fixedColumns}
-            constrainMode = {ConstrainMode.unconstrained}
-          />
+          <ListDetails></ListDetails>
         </>
       }
     </Stack.Item>

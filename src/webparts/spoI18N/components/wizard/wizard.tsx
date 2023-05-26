@@ -18,10 +18,9 @@ export interface IWizardProps {
 
 export const Wizard = () => {
   const [
-    selectedElements, fields,cts,lists,views
+    fields,cts,lists,views
   ] = useAppStore(
     state => ([
-      state.selectedElements,
       state.selectedFields,
       state.selectedContentTypes,
       state.selectedLists,
@@ -29,12 +28,11 @@ export const Wizard = () => {
     ])
   );
 
-  const [ wizardSteps, setWizardSteps ]   = React.useState<any[]>(steps);
   const [ currentStep, setCurrentStep ]   = React.useState(0);
   const [ isDialogOpen, setIsDialogOpen ] = React.useState(false);
 
   const handleNextClick = React.useCallback(() => {
-    setCurrentStep((prevCurrentStep) => (prevCurrentStep + 1) % wizardSteps.length);
+    setCurrentStep((prevCurrentStep) => (prevCurrentStep + 1) % steps.length);
   }, [setCurrentStep]);
 
   const handlePrevClick = React.useCallback(() => {
@@ -61,17 +59,6 @@ export const Wizard = () => {
     return elements[type] as number;
   }
 
-  /**
-   * It filters the available steps based on the selection elements to translate.
-   */
-  React.useEffect(() => {
-    setWizardSteps(() => {
-      return steps.filter(
-        s => !s.conditionValue || selectedElements.includes(s.conditionValue)
-      );
-    });
-  }, [selectedElements]);
-
   return (
     <>
     
@@ -92,12 +79,13 @@ export const Wizard = () => {
         </Stack.Item>
 
         <Pivot 
+          style={{display: "flex", flexFlow: 'column nowrap', alignItems: 'center'}}
           aria-label="Wizard steps" 
           selectedKey={String(currentStep)}
           onLinkClick={(item) => setCurrentStep(+item.props.itemKey)}
         >
           {
-            wizardSteps?.map((s,i) => (
+            steps?.map((s,i) => (
               <PivotItem 
                 itemKey    = {i.toString()}
                 headerText = {s.title}
@@ -106,7 +94,7 @@ export const Wizard = () => {
               >
                 <Stack 
                   horizontalAlign="center" 
-                  style={{minHeight: "360px"}}
+                  style={{minHeight: "360px", width: "600px"}}
                 >
                   {s.content}
                 </Stack>
@@ -117,7 +105,7 @@ export const Wizard = () => {
 
         <Stack.Item align='start'>
           {
-            currentStep < wizardSteps.length - 1 
+            currentStep < steps.length - 1 
             ? <PrimaryButton 
                 text="Next"    
                 onClick={handleNextClick}   

@@ -7,11 +7,9 @@ import { Elements } from '../../models/Elements';
 
 // Step components
 import { Logo }                 from '../../../../components/Logo';
-import { SpoElementsSelector }  from '../WizardSteps/SpoElementsSelector/SpoElementsSelector';
 import { ColumnsStep }          from '../WizardSteps/ColumnsStep/ColumnsStep';
 import { ContentTypesStep }     from '../WizardSteps/ContentTypesStep/ContentTypesStep';
 import { CsvStep }              from '../WizardSteps/CsvStep/CsvStep/CsvStep';
-import { ViewsStep }            from '../WizardSteps/ViewsStep/ViewsStep';
 import { ListsStep }            from '../WizardSteps/ListsStep/ListsStep';
 
 /**
@@ -34,11 +32,6 @@ export const steps = [
         </div>
       </>
     ),
-  },
-  {
-    title: 'Elements',
-    icon: 'MultiSelect',
-    content: <SpoElementsSelector />,
   },
   {
     title: 'Site Fields',
@@ -79,20 +72,6 @@ export const steps = [
         </Text>
         
         <ListsStep />
-      </>
-    ),
-  },
-  {
-    title: 'Views',
-    conditionValue: Elements.VIEWS,
-    icon: 'PageListFilter',
-    content: (
-      <>
-        <Text variant="medium">
-          Select the available <b>Views</b> based on your requirements.
-        </Text>
-        
-        <ViewsStep />
       </>
     ),
   },

@@ -20,9 +20,9 @@ import { Chip } from "../../../../../components/Chip/Chip";
 
 
 const columns: IColumn[] = [
-  { fieldName: "Name",         key: "Name",         name: "Name",        minWidth: 200, flexGrow: 1 },
-  { fieldName: "Description",  key: "Description",  name: "Description", minWidth: 200, flexGrow: 2 },
-  { fieldName: "Group",        key: "Group",        name: "Category",    minWidth: 200, flexGrow: 1 },
+  { fieldName: "Name",         key: "Name",         name: "Name",       minWidth: 100, flexGrow: 1, targetWidthProportion: 1 },
+  { fieldName: "Description",  key: "Description",  name: "Description",minWidth: 100, flexGrow: 1, targetWidthProportion: 1 },
+  { fieldName: "Group",        key: "Group",        name: "Category",   minWidth: 100, flexGrow: 1, targetWidthProportion: 1 },
 
 ];
 
@@ -185,7 +185,7 @@ export function ContentTypesStep() {
             
             compact
             layoutMode    = {DetailsListLayoutMode.fixedColumns}
-            constrainMode = {ConstrainMode.unconstrained}
+            constrainMode = {ConstrainMode.horizontalConstrained}
           />
         </>
       }

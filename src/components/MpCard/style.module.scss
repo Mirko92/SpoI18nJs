@@ -1,0 +1,24 @@
+.MpCard {
+  background-color: #a39fe078;
+  border-radius: 4px;
+  padding: .5rem 1rem;
+  flex:1;
+
+
+  &Header {
+    border-bottom: 2px solid #a39fe078;
+    margin-bottom: 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    h3 { margin-bottom: 10px;}
+  }
+
+  &Body {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+}

@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-import { Elements } from '../models/Elements';
 import { IListInfo }        from '@pnp/sp/lists';
 import { IFieldInfo }       from '@pnp/sp/fields';
 import { IViewInfo }        from '@pnp/sp/views';
@@ -22,9 +21,6 @@ interface IListsFilters {
 export interface IAppStore {
   locale: string; 
   setLocale: (locale: string) => void;
-
-  selectedElements: Elements[];
-  setSelectedElements: (selectedElements: Elements[]) => any;
 
   fieldsFilters: IFieldsFilters;
   setIFieldsFiters: (fieldsFilters: IFieldsFilters) => void;
@@ -67,16 +63,6 @@ export const useAppStore = create<IAppStore>()(devtools((set, get) => ({
   locale: "",
   setLocale: (locale: string) => {
     set({locale});
-  },
-
-  selectedElements: [
-    Elements.COLUMNS,
-    Elements.CONTENT_TYPES,
-    Elements.LISTS,
-    Elements.VIEWS
-  ],
-  setSelectedElements: (selectedElements: Elements[]) => {
-    set(() => ({ selectedElements }));
   },
 
   fieldsFilters: {},

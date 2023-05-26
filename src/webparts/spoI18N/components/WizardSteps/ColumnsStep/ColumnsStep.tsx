@@ -13,6 +13,16 @@ import {
   SelectionMode,
   ConstrainMode,
 } from "@fluentui/react";
+
+// import {
+//   TableBody,
+//   TableCell,
+//   TableRow,
+//   Table,
+//   TableHeader,
+//   TableHeaderCell,
+//   TableCellLayout,
+// } from "@fluentui/react-components";
 import { IFieldInfo } from "@pnp/sp/fields";
 import { useAppStore } from "../../../store/store";
 import { getFieldsByGroupsAndInternalName } from "../../../../../helpers/SharepointHelpers";
@@ -20,9 +30,9 @@ import { Chip } from "../../../../../components/Chip/Chip";
 
 
 const tableColumns: IColumn[] = [
-  { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 100,  maxWidth: 300, flexGrow:3,  },
-  { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 200,  maxWidth: 300, flexGrow:2,  },
-  { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 200,  maxWidth: 200, flexGrow:1,  },
+  { fieldName: "Title",         key: "Title",         name: "Title",        minWidth: 100, flexGrow: 1, targetWidthProportion: 1 },
+  { fieldName: "InternalName",  key: "InternalName",  name: "InternalName", minWidth: 100, flexGrow: 1, targetWidthProportion: 1 },
+  { fieldName: "Group",         key: "Group",         name: "Group",        minWidth: 100, flexGrow: 1, targetWidthProportion: 1 },
 ];
 
 
@@ -199,6 +209,40 @@ export function ColumnsStep() {
         </Stack>
   
         <div>
+          {/* <Table size="small" aria-label="Table with small size">
+            <TableHeader>
+              <TableRow>
+                {tableColumns.map((column) => (
+                  <TableHeaderCell key={column.key}>
+                    {column.name}
+                  </TableHeaderCell>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {fields.map((item) => (
+
+                <TableRow key={item.Id}>
+
+                  <TableCell>
+                    <TableCellLayout>
+                      {item.Title}
+                    </TableCellLayout>
+                  </TableCell>
+
+                  <TableCell>
+                    <TableCellLayout>
+                      {item.InternalName}
+                    </TableCellLayout>
+                  </TableCell>
+
+                  <TableCell>
+                    {item.Group}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table> */}
           <DetailsList
             items         = {fields}
             columns       = {tableColumns}
@@ -213,7 +257,7 @@ export function ColumnsStep() {
 
             compact
             layoutMode    = {DetailsListLayoutMode.fixedColumns}
-            constrainMode = {ConstrainMode.unconstrained}
+            constrainMode = {ConstrainMode.horizontalConstrained}
           />
         </div>
       </>
