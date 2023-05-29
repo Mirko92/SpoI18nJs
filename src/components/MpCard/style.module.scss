@@ -13,12 +13,16 @@
     align-items: center;
     gap: 10px;
     h3 { margin-bottom: 10px;}
+
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &Body {
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
   }
 }

@@ -13,8 +13,7 @@
     "clean": "gulp clean",
     "test": "gulp test",
     "versioning": "gulp versioning",
-    "ship": "gulp clean && gulp versioning && gulp bundle --ship && gulp package-solution --ship",
-    "serve": "gulp bundle --custom-serve --max_old_space_size=4096 && fast-serve"
+    "ship": "gulp clean && gulp versioning && gulp bundle --ship && gulp package-solution --ship"
   },
   "dependencies": {
     "@fluentui/react": "^8.109.1",
